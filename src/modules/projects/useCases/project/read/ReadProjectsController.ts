@@ -5,8 +5,6 @@ class ReadProjectsController {
   constructor(private readProjectsUseCase: ReadProjectsUseCase) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    console.log('chegou no controller');
-
     try {
       const allProjects = await this.readProjectsUseCase.execute();
 
