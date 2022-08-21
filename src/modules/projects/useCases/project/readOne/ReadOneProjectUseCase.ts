@@ -1,5 +1,4 @@
 import { IProjectsRepository } from '../../../repositories/IProjectsRepository';
-import { PrismaClient } from '@prisma/client';
 import { AppError } from '../../../../../errors/AppError';
 import { ProjectsRepository } from '../../../repositories/implementations/ProjectsRepository';
 

@@ -5,34 +5,38 @@ import { ProjectsRepository } from '../../../repositories/implementations/Projec
 interface IRequest {
   id: string;
   name: string;
+  user: string;
+  shouldBeCompletedAt: Date;
 }
 
-class UpdateProjectUseCase {
+class UpdateTaskUseCase {
   constructor(private projectsRepository: IProjectsRepository) {}
 
-  async execute({ id, name }: IRequest) {
+  async execute({ id, name, user, shouldBeCompletedAt }: IRequest) {
     const prisma = ProjectsRepository.getPrismaInstance();
 
-    const project = await prisma.project.findFirst({
+    const task = await prisma.task.findFirst({
       where: {
         id,
       },
     });
 
-    if (!project) {
+    if (!task) {
       throw new AppError('Project not found', 404);
-    }
-
-    if (project.name === name) {
-      throw new AppError(`The name of the project is already ${name}`, 400);
     }
 
     if (name === '') {
       throw new AppError(`Invalid name`, 400);
     }
+    if (user === '') {
+      throw new AppError(`Invalid user`, 400);
+    }
+    if (shouldBeCompletedAt === null || shouldBeCompletedAt === undefined) {
+      throw new AppError(`Invalid date`, 400);
+    }
 
-    this.projectsRepository.update({ id, name });
+    this.projectsRepository.updateTask({ id, name, user, shouldBeCompletedAt });
   }
 }
 
-export { UpdateProjectUseCase };
+export { UpdateTaskUseCase };

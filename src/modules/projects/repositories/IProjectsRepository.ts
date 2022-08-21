@@ -23,6 +23,24 @@ interface ISoftdeleteProjectDTO {
 interface IRestoreProjectDTO {
   id: string;
 }
+
+interface ICreateTaskDTO {
+  id: string;
+  name: string;
+  user: string;
+  shouldBeCompletedAt: Date;
+  status: string;
+}
+interface IUpdateTaskDTO {
+  id: string;
+  name: string;
+  user: string;
+  shouldBeCompletedAt: Date;
+}
+interface IDeleteTaskDTO {
+  id: string;
+}
+
 interface IProjectsRepository {
   create({ name }: ICreateProjectDTO): Promise<void>;
   read(): Promise<Project[]>;
@@ -33,6 +51,21 @@ interface IProjectsRepository {
   softdelete({ id }: ISoftdeleteProjectDTO): Promise<void>;
   restore(): Promise<void>;
   restoreOne({ id }: IRestoreProjectDTO): Promise<void>;
+
+  createTask({
+    id,
+    name,
+    user,
+    shouldBeCompletedAt,
+    status,
+  }: ICreateTaskDTO): Promise<void>;
+  updateTask({
+    id,
+    name,
+    user,
+    shouldBeCompletedAt,
+  }: IUpdateTaskDTO): Promise<void>;
+  deleteTask({ id }: IDeleteTaskDTO): Promise<void>;
 }
 
 export {
@@ -43,4 +76,7 @@ export {
   IDeleteProjectDTO,
   ISoftdeleteProjectDTO,
   IRestoreProjectDTO,
+  ICreateTaskDTO,
+  IUpdateTaskDTO,
+  IDeleteTaskDTO,
 };

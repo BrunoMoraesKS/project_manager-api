@@ -19,7 +19,7 @@ class CreateProjectController {
 
     return res
       .status(201)
-      .send({ message: `Projeto '${name}' criado com sucesso` });
+      .send({ message: `Project '${name}' successfully created` });
   }
 }
 

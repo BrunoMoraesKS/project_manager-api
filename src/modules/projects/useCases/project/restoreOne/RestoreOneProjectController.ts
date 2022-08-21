@@ -19,7 +19,7 @@ class RestoreOneProjectController {
 
     return res
       .status(201)
-      .send({ message: `Project '${id}' succesfully restored` });
+      .send({ message: `Project '${id}' successfully restored` });
   }
 }
 

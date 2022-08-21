@@ -15,7 +15,7 @@ class RestoreProjectsController {
 
     return res
       .status(201)
-      .send({ message: `All projects were succesfully restored` });
+      .send({ message: `All projects were successfully restored` });
   }
 }
 

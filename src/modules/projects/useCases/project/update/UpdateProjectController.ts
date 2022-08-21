@@ -21,7 +21,7 @@ class UpdateProjectController {
 
     return res
       .status(201)
-      .send({ message: `Project '${name}' succesfully updated` });
+      .send({ message: `Project '${name}' successfully updated` });
   }
 }
 

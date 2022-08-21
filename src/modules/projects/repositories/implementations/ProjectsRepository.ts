@@ -1,28 +1,26 @@
 import { AppError } from '../../../../errors/AppError';
 import {
   ICreateProjectDTO,
+  ICreateTaskDTO,
   IDeleteProjectDTO,
   IReadOneProjectDTO,
   IRestoreProjectDTO,
   ISoftdeleteProjectDTO,
   IUpdateProjectDTO,
+  IUpdateTaskDTO,
+  IDeleteTaskDTO,
 } from '../IProjectsRepository';
 import { prisma, PrismaClient, Project } from '@prisma/client';
 
 class ProjectsRepository {
-  private prisma = new PrismaClient();
+  private static prisma = new PrismaClient();
 
-  private static PRISMA_INSTANCE: PrismaClient;
   public static getPrismaInstance(): PrismaClient {
-    if (!ProjectsRepository.PRISMA_INSTANCE) {
-      ProjectsRepository.PRISMA_INSTANCE = new PrismaClient();
-    }
-
-    return ProjectsRepository.PRISMA_INSTANCE;
+    return ProjectsRepository.prisma;
   }
 
   async create({ name }: ICreateProjectDTO): Promise<void> {
-    await this.prisma.project.create({
+    await ProjectsRepository.prisma.project.create({
       data: {
         name,
       },
@@ -30,9 +28,12 @@ class ProjectsRepository {
   }
 
   async read(): Promise<Project[]> {
-    const allProjects = await this.prisma.project.findMany({
+    const allProjects = await ProjectsRepository.prisma.project.findMany({
       where: {
         isActive: true,
+      },
+      include: {
+        tasks: true,
       },
     });
 
@@ -40,9 +41,12 @@ class ProjectsRepository {
   }
 
   async readOne({ id }: IReadOneProjectDTO): Promise<Project> {
-    const project = await this.prisma.project.findFirst({
+    const project = await ProjectsRepository.prisma.project.findFirst({
       where: {
         id,
+      },
+      include: {
+        tasks: true,
       },
     });
 
@@ -50,17 +54,21 @@ class ProjectsRepository {
   }
 
   async readSoftdeleted(): Promise<Project[]> {
-    const allSoftdeletedProjects = await this.prisma.project.findMany({
-      where: {
-        isActive: false,
-      },
-    });
+    const allSoftdeletedProjects =
+      await ProjectsRepository.prisma.project.findMany({
+        where: {
+          isActive: false,
+        },
+        include: {
+          tasks: true,
+        },
+      });
 
     return allSoftdeletedProjects;
   }
 
   async update({ id, name }: IUpdateProjectDTO): Promise<void> {
-    await this.prisma.project.update({
+    await ProjectsRepository.prisma.project.update({
       where: {
         id,
       },
@@ -72,15 +80,21 @@ class ProjectsRepository {
   }
 
   async delete({ id }: IDeleteProjectDTO): Promise<void> {
-    await this.prisma.project.delete({
+    await ProjectsRepository.prisma.project.delete({
       where: {
         id,
+      },
+    });
+
+    await ProjectsRepository.prisma.task.deleteMany({
+      where: {
+        projectId: id,
       },
     });
   }
 
   async softdelete({ id }: ISoftdeleteProjectDTO): Promise<void> {
-    await this.prisma.project.update({
+    await ProjectsRepository.prisma.project.update({
       where: {
         id,
       },
@@ -92,7 +106,7 @@ class ProjectsRepository {
   }
 
   async restore(): Promise<void> {
-    await this.prisma.project.updateMany({
+    await ProjectsRepository.prisma.project.updateMany({
       where: {
         isActive: false,
       },
@@ -104,13 +118,70 @@ class ProjectsRepository {
   }
 
   async restoreOne({ id }: IRestoreProjectDTO): Promise<void> {
-    await this.prisma.project.update({
+    await ProjectsRepository.prisma.project.update({
       where: {
         id,
       },
       data: {
         isActive: true,
         updatedAt: new Date(),
+      },
+    });
+  }
+
+  async createTask({
+    id,
+    name,
+    user,
+    shouldBeCompletedAt,
+    status,
+  }: ICreateTaskDTO): Promise<void> {
+    await ProjectsRepository.prisma.project.update({
+      where: {
+        id,
+      },
+      data: {
+        tasks: {
+          create: {
+            name,
+            user,
+            shouldBeCompletedAt,
+            status,
+          },
+        },
+      },
+    });
+  }
+
+  async updateTask({
+    id,
+    name,
+    user,
+    shouldBeCompletedAt,
+  }: IUpdateTaskDTO): Promise<void> {
+    const task = await ProjectsRepository.prisma.task.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    await ProjectsRepository.prisma.task.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        user,
+        shouldBeCompletedAt,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async deleteTask({ id }: IDeleteTaskDTO): Promise<void> {
+    await ProjectsRepository.prisma.task.delete({
+      where: {
+        id,
       },
     });
   }

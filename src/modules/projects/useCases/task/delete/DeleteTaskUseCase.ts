@@ -6,24 +6,24 @@ interface IRequest {
   id: string;
 }
 
-class DeleteProjectUseCase {
+class DeleteTaskUseCase {
   constructor(private projectsRepository: IProjectsRepository) {}
 
   async execute({ id }: IRequest) {
     const prisma = ProjectsRepository.getPrismaInstance();
 
-    const project = await prisma.project.findFirst({
+    const task = await prisma.task.findFirst({
       where: {
         id,
       },
     });
 
-    if (!project) {
-      throw new AppError('Project not found', 404);
+    if (!task) {
+      throw new AppError('Task not found', 404);
     }
 
-    this.projectsRepository.delete({ id });
+    this.projectsRepository.deleteTask({ id });
   }
 }
 
-export { DeleteProjectUseCase };
+export { DeleteTaskUseCase };

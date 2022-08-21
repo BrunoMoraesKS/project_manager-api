@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import { DeleteProjectUseCase } from './DeleteProjectUseCase';
+import { DeleteTaskUseCase } from './DeleteTaskUseCase';
 
-class DeleteProjectController {
-  constructor(private deleteProjectUseCase: DeleteProjectUseCase) {}
+class DeleteTaskController {
+  constructor(private deleteTaskUseCase: DeleteTaskUseCase) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
     try {
-      await this.deleteProjectUseCase.execute({
+      await this.deleteTaskUseCase.execute({
         id,
       });
     } catch (err: any) {
@@ -19,8 +19,8 @@ class DeleteProjectController {
 
     return res
       .status(201)
-      .send({ message: `Project '${id}' successfully deleted` });
+      .send({ message: `Task '${id}' successfully deleted` });
   }
 }
 
-export { DeleteProjectController };
+export { DeleteTaskController };
