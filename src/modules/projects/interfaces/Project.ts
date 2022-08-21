@@ -3,7 +3,6 @@ export interface ITask {
   name: string;
   user: string;
   shouldBeCompletedAt: Date;
-  status: 'completed' | 'expired' | 'pending';
   createdAt: Date;
   updatedAt: Date;
 }

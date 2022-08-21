@@ -5,7 +5,7 @@ class CreateTaskController {
   constructor(private createTaskUseCase: CreateTaskUseCase) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { name, user, shouldBeCompletedAt, status } = req.body;
+    const { name, user, shouldBeCompletedAt } = req.body;
     const { id } = req.params;
 
     try {
@@ -14,7 +14,6 @@ class CreateTaskController {
         name,
         user,
         shouldBeCompletedAt,
-        status,
       });
     } catch (err: any) {
       return res.status(err.statusCode).json({

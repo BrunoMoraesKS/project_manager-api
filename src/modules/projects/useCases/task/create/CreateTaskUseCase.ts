@@ -7,19 +7,12 @@ interface IRequest {
   name: string;
   user: string;
   shouldBeCompletedAt: Date;
-  status: string;
 }
 
 class CreateTaskUseCase {
   constructor(private projectsRepository: IProjectsRepository) {}
 
-  async execute({
-    id,
-    name,
-    user,
-    shouldBeCompletedAt: date,
-    status,
-  }: IRequest) {
+  async execute({ id, name, user, shouldBeCompletedAt: date }: IRequest) {
     const prisma = ProjectsRepository.getPrismaInstance();
     const shouldBeCompletedAt = new Date(date);
 
@@ -38,7 +31,6 @@ class CreateTaskUseCase {
       name,
       user,
       shouldBeCompletedAt,
-      status,
     });
   }
 }

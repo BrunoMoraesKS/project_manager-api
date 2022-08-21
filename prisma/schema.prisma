@@ -12,7 +12,6 @@ model Task {
   name                String
   user                String
   shouldBeCompletedAt DateTime
-  status              String
   createdAt           DateTime @default(now())
   updatedAt           DateTime @default(now())
   Project             Project? @relation(fields: [projectId], references: [id])

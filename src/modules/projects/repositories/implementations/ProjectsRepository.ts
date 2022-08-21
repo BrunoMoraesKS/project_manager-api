@@ -1,4 +1,3 @@
-import { AppError } from '../../../../errors/AppError';
 import {
   ICreateProjectDTO,
   ICreateTaskDTO,
@@ -10,7 +9,7 @@ import {
   IUpdateTaskDTO,
   IDeleteTaskDTO,
 } from '../IProjectsRepository';
-import { prisma, PrismaClient, Project } from '@prisma/client';
+import { PrismaClient, Project } from '@prisma/client';
 
 class ProjectsRepository {
   private static prisma = new PrismaClient();
@@ -134,7 +133,6 @@ class ProjectsRepository {
     name,
     user,
     shouldBeCompletedAt,
-    status,
   }: ICreateTaskDTO): Promise<void> {
     await ProjectsRepository.prisma.project.update({
       where: {
@@ -146,7 +144,6 @@ class ProjectsRepository {
             name,
             user,
             shouldBeCompletedAt,
-            status,
           },
         },
       },

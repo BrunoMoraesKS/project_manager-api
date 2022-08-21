@@ -29,7 +29,6 @@ interface ICreateTaskDTO {
   name: string;
   user: string;
   shouldBeCompletedAt: Date;
-  status: string;
 }
 interface IUpdateTaskDTO {
   id: string;
@@ -57,7 +56,6 @@ interface IProjectsRepository {
     name,
     user,
     shouldBeCompletedAt,
-    status,
   }: ICreateTaskDTO): Promise<void>;
   updateTask({
     id,
