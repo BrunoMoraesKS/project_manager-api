@@ -39,6 +39,12 @@ interface IUpdateTaskDTO {
 interface IDeleteTaskDTO {
   id: string;
 }
+interface ICompleteTaskDTO {
+  id: string;
+}
+interface IUncompleteTaskDTO {
+  id: string;
+}
 
 interface IProjectsRepository {
   create({ name }: ICreateProjectDTO): Promise<void>;
@@ -64,6 +70,8 @@ interface IProjectsRepository {
     shouldBeCompletedAt,
   }: IUpdateTaskDTO): Promise<void>;
   deleteTask({ id }: IDeleteTaskDTO): Promise<void>;
+  completeTask({ id }: ICompleteTaskDTO): Promise<void>;
+  uncompleteTask({ id }: IUncompleteTaskDTO): Promise<void>;
 }
 
 export {
@@ -77,4 +85,6 @@ export {
   ICreateTaskDTO,
   IUpdateTaskDTO,
   IDeleteTaskDTO,
+  ICompleteTaskDTO,
+  IUncompleteTaskDTO,
 };

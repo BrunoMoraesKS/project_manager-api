@@ -8,6 +8,8 @@ import {
   IUpdateProjectDTO,
   IUpdateTaskDTO,
   IDeleteTaskDTO,
+  IUncompleteTaskDTO,
+  ICompleteTaskDTO,
 } from '../IProjectsRepository';
 import { PrismaClient, Project } from '@prisma/client';
 
@@ -156,12 +158,6 @@ class ProjectsRepository {
     user,
     shouldBeCompletedAt,
   }: IUpdateTaskDTO): Promise<void> {
-    const task = await ProjectsRepository.prisma.task.findFirst({
-      where: {
-        id,
-      },
-    });
-
     await ProjectsRepository.prisma.task.update({
       where: {
         id,
@@ -179,6 +175,30 @@ class ProjectsRepository {
     await ProjectsRepository.prisma.task.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  async completeTask({ id }: ICompleteTaskDTO): Promise<void> {
+    await ProjectsRepository.prisma.task.update({
+      where: {
+        id,
+      },
+      data: {
+        isCompleted: true,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async uncompleteTask({ id }: IUncompleteTaskDTO): Promise<void> {
+    await ProjectsRepository.prisma.task.update({
+      where: {
+        id,
+      },
+      data: {
+        isCompleted: false,
+        updatedAt: new Date(),
       },
     });
   }

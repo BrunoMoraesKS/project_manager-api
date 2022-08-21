@@ -4,15 +4,12 @@ import { ProjectsRepository } from '../../../repositories/implementations/Projec
 
 interface IRequest {
   id: string;
-  name: string;
-  user: string;
-  shouldBeCompletedAt: Date;
 }
 
-class UpdateTaskUseCase {
+class CompleteTaskUseCase {
   constructor(private projectsRepository: IProjectsRepository) {}
 
-  async execute({ id, name, user, shouldBeCompletedAt }: IRequest) {
+  async execute({ id }: IRequest) {
     const prisma = ProjectsRepository.getPrismaInstance();
 
     const task = await prisma.task.findFirst({
@@ -25,18 +22,10 @@ class UpdateTaskUseCase {
       throw new AppError('Task not found', 404);
     }
 
-    if (name === '') {
-      throw new AppError(`Invalid name`, 400);
-    }
-    if (user === '') {
-      throw new AppError(`Invalid user`, 400);
-    }
-    if (shouldBeCompletedAt === null || shouldBeCompletedAt === undefined) {
-      throw new AppError(`Invalid date`, 400);
-    }
-
-    this.projectsRepository.updateTask({ id, name, user, shouldBeCompletedAt });
+    this.projectsRepository.completeTask({
+      id,
+    });
   }
 }
 
-export { UpdateTaskUseCase };
+export { CompleteTaskUseCase };
