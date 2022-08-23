@@ -53,6 +53,7 @@ interface IProjectsRepository {
   readSoftdeleted(): Promise<Project[]>;
   update({ id, name }: IUpdateProjectDTO): Promise<void>;
   delete({ id }: IDeleteProjectDTO): Promise<void>;
+  deleteAll(): Promise<void>;
   softdelete({ id }: ISoftdeleteProjectDTO): Promise<void>;
   restore(): Promise<void>;
   restoreOne({ id }: IRestoreProjectDTO): Promise<void>;

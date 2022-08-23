@@ -94,6 +94,41 @@ class ProjectsRepository {
     });
   }
 
+  async deleteAll(): Promise<void> {
+    await ProjectsRepository.prisma.project.deleteMany({
+      where: {
+        isActive: false,
+      },
+    });
+
+    const allProjects = await ProjectsRepository.prisma.project.findMany({
+      select: {
+        id: true,
+      },
+    });
+
+    const allTasks = await ProjectsRepository.prisma.task.findMany({
+      select: {
+        id: true,
+        projectId: true,
+      },
+    });
+
+    const tasksToDelete = allTasks.filter((task) => {
+      const projectIds = allProjects.map((project) => project.id);
+
+      return !projectIds.includes(task.projectId!);
+    });
+
+    await ProjectsRepository.prisma.task.deleteMany({
+      where: {
+        id: {
+          in: tasksToDelete.map((task) => task.id),
+        },
+      },
+    });
+  }
+
   async softdelete({ id }: ISoftdeleteProjectDTO): Promise<void> {
     await ProjectsRepository.prisma.project.update({
       where: {

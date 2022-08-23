@@ -7,6 +7,7 @@ import {
 } from 'express-validator';
 import { createProjectController } from '../modules/projects/useCases/project/create';
 import { deleteProjectController } from '../modules/projects/useCases/project/delete';
+import { deleteAllProjectsController } from '../modules/projects/useCases/project/deleteAll';
 import { readProjectsController } from '../modules/projects/useCases/project/read';
 import { readOneProjectController } from '../modules/projects/useCases/project/readOne';
 import { readSoftdeletedProjectsController } from '../modules/projects/useCases/project/readSoftdelete';
@@ -37,6 +38,10 @@ projectsRoutes.post(
 
 projectsRoutes.get('/trashCan', (req: Request, res: Response) => {
   return readSoftdeletedProjectsController.handle(req, res);
+});
+
+projectsRoutes.delete('/trashCan', (req: Request, res: Response) => {
+  return deleteAllProjectsController.handle(req, res);
 });
 
 projectsRoutes.get('/', (req: Request, res: Response) => {
