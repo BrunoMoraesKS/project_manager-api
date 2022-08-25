@@ -18,7 +18,7 @@ class SoftdeleteProjectController {
     }
 
     return res
-      .status(201)
+      .status(200)
       .send({ message: `Project '${id}' moved to the trash can` });
   }
 }

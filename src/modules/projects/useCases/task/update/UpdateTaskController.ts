@@ -23,7 +23,7 @@ class UpdateTaskController {
     }
 
     return res
-      .status(201)
+      .status(200)
       .send({ message: `Task '${name}' successfully updated` });
   }
 }

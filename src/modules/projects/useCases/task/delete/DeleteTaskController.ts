@@ -18,7 +18,7 @@ class DeleteTaskController {
     }
 
     return res
-      .status(201)
+      .status(200)
       .send({ message: `Task '${id}' successfully deleted` });
   }
 }

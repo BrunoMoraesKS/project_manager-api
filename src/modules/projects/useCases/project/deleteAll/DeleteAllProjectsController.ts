@@ -13,7 +13,7 @@ class DeleteAllProjectsController {
       });
     }
 
-    return res.status(201).send({ message: `Projects successfully deleted` });
+    return res.status(200).send({ message: `Projects successfully deleted` });
   }
 }
 

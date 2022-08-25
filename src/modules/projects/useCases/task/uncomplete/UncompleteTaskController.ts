@@ -18,7 +18,7 @@ class UncompleteTaskController {
     }
 
     return res
-      .status(201)
+      .status(200)
       .send({ message: `Task '${id}' successfully uncompleted` });
   }
 }

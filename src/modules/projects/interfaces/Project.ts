@@ -14,5 +14,4 @@ export interface IProject {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  softdeletedAt: Date;
 }
