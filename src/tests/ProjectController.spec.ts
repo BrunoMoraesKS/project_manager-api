@@ -61,8 +61,6 @@ describe('Project integration tests', () => {
   it('should be able to softdelete a project', async () => {
     const allProjects = await request(app).get('/projects').send();
 
-    console.log(allProjects.body);
-
     const testProject = allProjects.body[0];
 
     await request(app)
