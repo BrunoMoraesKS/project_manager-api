@@ -21,7 +21,7 @@ Clone the project, run <strong>npm install</strong> or <strong>yarn</strong>, af
 
 <h2>To access:</h2>
 
-https://project-manager-react-client.herokuapp.com/projects
+https://project-manager-node-api.herokuapp.com/projects
 
 <br/>
 
